@@ -149,15 +149,7 @@ const InvoiceGenerator = () => {
       companyName, companyPhone, companyAddress,
       bankName, bankBranch, bankAcName, bankAcNo, bankIfsc]);
 
-  /* ── auto-fill qty from depth on mount ── */
-  useEffect(() => {
-    setRows(prev => prev.map(row => {
-      if (!row.depth || row.qty !== "") return row;
-      const range = parseDepthRange(row.depth);
-      if (!range) return row;
-      return { ...row, qty: String(range.hi - range.lo + 1) };
-    }));
-  }, []);
+
 
   /* ── row handlers ── */
   const updateRow = (i, field, val) =>
