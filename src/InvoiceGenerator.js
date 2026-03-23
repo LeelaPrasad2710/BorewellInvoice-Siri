@@ -35,7 +35,7 @@ const numberToWords = (num) => {
 const parseDepthRange = (depthStr) => {
   if (!depthStr) return null;
   // handle both hyphen variants: – (en-dash) and -
-  const parts = depthStr.split(/[–\-]/);
+  const parts = depthStr.split(/[–-]/);
   if (parts.length !== 2) return null;
   const lo = parseInt(parts[0].trim(), 10);
   const hi = parseInt(parts[1].trim(), 10);
