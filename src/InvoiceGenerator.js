@@ -640,7 +640,7 @@ const InvoiceGenerator = () => {
         <div className="inv-actions no-print">
           <button className="inv-btn inv-btn--muted" onClick={resetAll}>Reset All</button>
           <button className={`inv-btn ${applyGST ? "inv-btn--gst-on" : "inv-btn--gst-off"}`} onClick={handleGstToggle} title={!gst ? "Fill Client GST first" : ""}>
-            {applyGST ? "✓ GST Applied" : "Apply GST (18%)"}
+            {applyGST ? "✓ GST Applied" : "Apply GST"}
           </button>
           <button className="inv-btn inv-btn--export" onClick={exportToPDF}>Export PDF</button>
         </div>
