@@ -96,8 +96,6 @@ const DEFAULT_BANK = {
   ifsc:   "SBIN0040653",
 };
 
-const STORE_KEY = "svb_invoice_v4";
-
 /* ════════════════════════════════════════════════
    COMPONENT
 ════════════════════════════════════════════════ */
@@ -140,42 +138,10 @@ const InvoiceGenerator = () => {
   const advanceAmt   = Math.min(Math.max(0, parseFloat(advance) || 0), totalWithGST);
   const payable      = Math.max(0, totalWithGST - advanceAmt);
 
-  /* ── load from localStorage ── */
-  useEffect(() => {
-    const saved = localStorage.getItem(STORE_KEY);
-    if (saved) {
-      try {
-        const s = JSON.parse(saved);
-        if (s.rows)           setRows(s.rows);
-        if (s.applyGST)       setApplyGST(s.applyGST);
-        if (s.advance)        setAdvance(s.advance);
-        if (s.to)             setTo(s.to);
-        if (s.addr)           setAddr(s.addr);
-        if (s.mobile)         setMobile(s.mobile);
-        if (s.gst)            setGst(s.gst);
-        if (s.pos)            setPos(s.pos);
-        if (s.invDate)        setInvDate(s.invDate);
-        if (s.companyName)    setCompanyName(s.companyName);
-        if (s.companyPhone)   setCompanyPhone(s.companyPhone);
-        if (s.companyAddress) setCompanyAddress(s.companyAddress);
-        if (s.bankName)       setBankName(s.bankName);
-        if (s.bankBranch)     setBankBranch(s.bankBranch);
-        if (s.bankAcName)     setBankAcName(s.bankAcName);
-        if (s.bankAcNo)       setBankAcNo(s.bankAcNo);
-        if (s.bankIfsc)       setBankIfsc(s.bankIfsc);
-      } catch (_) {}
-    }
-  }, []);
-
   /* ── autosave ── */
   useEffect(() => {
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      localStorage.setItem(STORE_KEY, JSON.stringify({
-        rows, applyGST, advance, to, addr, mobile, gst, pos, invDate,
-        companyName, companyPhone, companyAddress,
-        bankName, bankBranch, bankAcName, bankAcNo, bankIfsc,
-      }));
       setSavedToast(true);
       setTimeout(() => setSavedToast(false), 1400);
     }, 700);
@@ -255,7 +221,6 @@ const InvoiceGenerator = () => {
 
   /* ── reset ── */
   const resetAll = () => {
-    localStorage.removeItem(STORE_KEY);
     setRows(JSON.parse(JSON.stringify(DEFAULT_ROWS)));
     setApplyGST(false); setAdvance("");
     setTo(""); setAddr(""); setMobile(""); setGst(""); setPos("");
