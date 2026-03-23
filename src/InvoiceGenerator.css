@@ -1,0 +1,655 @@
+/* ════════════════════════════════════════════
+   SREE VINAYAKA BOREWELLS — Invoice Generator
+   Mobile-first CSS  |  Breakpoints: 480, 640px
+════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.inv-page {
+  min-height: 100vh;
+  background: #f0f4f8;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  color: #1a202c;
+  position: relative;
+}
+
+.inv-toast {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  background: #276749;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  z-index: 9999;
+  animation: toastIn 0.2s ease;
+  pointer-events: none;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.inv-wrap {
+  width: 100%;
+  max-width: 860px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+/* ════════════════════
+   HEADER
+════════════════════ */
+.inv-header {
+  background: #1a56a0;
+  padding: 20px 16px 16px;
+  text-align: center;
+  color: #fff;
+}
+
+.inv-company {
+  font-size: clamp(16px, 5vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.inv-contact {
+  font-size: clamp(11px, 3vw, 13px);
+  margin-top: 5px;
+  color: #bee3f8;
+  font-weight: 500;
+}
+
+.inv-address {
+  font-size: clamp(10px, 2.8vw, 12px);
+  margin-top: 3px;
+  color: #90cdf4;
+  line-height: 1.4;
+}
+
+.inv-ebill-badge {
+  display: inline-block;
+  margin-top: 10px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 14px;
+  border-radius: 20px;
+}
+
+/* ════════════════════
+   SECTIONS
+════════════════════ */
+.inv-section {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid #e8edf2;
+}
+
+.inv-section--table {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}
+
+.inv-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #4a7fac;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  padding-top: 12px;
+}
+
+/* ════════════════════
+   SHARED INPUT STYLES
+════════════════════ */
+.inv-input {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #d1dce8;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1a202c;
+  background: #fafcff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.inv-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49,130,206,0.15);
+  background: #fff;
+}
+
+.inv-input--sm {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.inv-input--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-input--error {
+  border-color: #c53030 !important;
+  background: #fff5f5 !important;
+}
+
+/* Date input inside fields grid */
+.inv-date-input {
+  cursor: pointer;
+  font-weight: 600;
+  color: #1a3a5c;
+}
+
+/* Hide number spinners */
+.inv-input--num::-webkit-outer-spin-button,
+.inv-input--num::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.inv-input--num[type=number],
+input[type=number] { -moz-appearance: textfield; }
+
+.inv-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #637d96;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.inv-gst-hint {
+  font-size: 10px;
+  font-weight: 400;
+  color: #90a4b8;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.inv-field-error {
+  display: block;
+  font-size: 11px;
+  color: #c53030;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.inv-qty-err {
+  color: #c53030;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ════════════════════
+   CLIENT FIELDS GRID
+════════════════════ */
+.inv-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.inv-field {}
+
+/* 2-col on ≥480px */
+@media (min-width: 480px) {
+  .inv-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ════════════════════
+   DESKTOP TABLE
+════════════════════ */
+.inv-table-wrap {
+  display: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid #e8edf2;
+}
+
+@media (min-width: 640px) {
+  .inv-table-wrap {
+    display: block;
+  }
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: fixed;          /* fixed layout prevents columns expanding */
+}
+
+.inv-table th {
+  background: #f0f6ff;
+  color: #4a7fac;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 8px;
+  text-align: left;
+  border-bottom: 2px solid #bee3f8;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.inv-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #edf2f7;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.inv-table tr:last-child td { border-bottom: none; }
+.inv-table tr:hover td { background: #f7faff; }
+
+/* Column widths — fixed so depth never clips */
+.col-desc  { width: 34%; }
+.col-depth { width: 18%; white-space: nowrap; }   /* enough for 1001–1100 */
+.col-num   { width: 12%; text-align: right; }
+.col-amt   { width: 16%; text-align: right; }
+.col-del   { width: 4%; }
+
+/* Amount column header right-align */
+.col-amt { padding-right: 10px !important; }
+
+.inv-table-input {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 5px 4px;
+  font-size: 13px;
+  background: transparent;
+  color: #1a202c;
+  width: 100%;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.inv-table-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  background: #fff;
+}
+
+.inv-table-input--desc  { min-width: 0; }
+.inv-table-input--depth {
+  width: 100%;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.inv-table-input--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-table-input--err {
+  border-color: #c53030 !important;
+  background: #fff5f5 !important;
+}
+
+/* Amount cell — right aligned, tabular nums */
+.inv-table-amount {
+  text-align: right;
+  padding-right: 12px !important;
+  padding-left: 4px !important;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #1a56a0;
+  white-space: nowrap;
+}
+
+/* ════════════════════
+   MOBILE ROW CARDS
+════════════════════ */
+.inv-mobile-rows {
+  display: block;
+  border-top: 1px solid #e8edf2;
+}
+
+@media (min-width: 640px) {
+  .inv-mobile-rows { display: none; }
+}
+
+.inv-mobile-row {
+  padding: 10px 14px;
+  border-bottom: 1px solid #edf2f7;
+  background: #fff;
+}
+
+.inv-mobile-row:active { background: #f7faff; }
+
+.inv-mobile-row__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.inv-mobile-desc {
+  flex: 1;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 7px 10px;
+}
+
+.inv-mobile-row__depth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.inv-mobile-row__depth .inv-label {
+  margin: 0;
+  white-space: nowrap;
+  min-width: 44px;
+}
+
+.inv-mobile-row__nums {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.inv-mobile-num {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.inv-mobile-num--amount .inv-label { color: #276749; }
+
+.inv-amount-display {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a56a0;
+  padding: 7px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Add / Delete buttons */
+.inv-add-btn {
+  font-size: 12px;
+  font-weight: 700;
+  color: #3182ce;
+  background: none;
+  border: 1px dashed #90cdf4;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.inv-add-btn:hover { background: #ebf8ff; }
+
+.inv-del-btn {
+  background: none;
+  border: none;
+  color: #c53030;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.inv-del-btn:hover { background: #fff5f5; }
+
+/* ════════════════════
+   BOTTOM: BANK + SUMMARY
+════════════════════ */
+.inv-bottom {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #e8edf2;
+}
+
+@media (min-width: 640px) {
+  .inv-bottom {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.inv-bank {
+  padding: 14px;
+  border-bottom: 1px solid #e8edf2;
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .inv-bank {
+    border-bottom: none;
+    border-right: 1px solid #e8edf2;
+  }
+}
+
+.inv-bank-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #4a7fac;
+  margin-bottom: 10px;
+}
+
+.inv-bank-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 3px 0;
+  border-bottom: 1px solid #f0f4f8;
+}
+
+.inv-bank-row span:first-child {
+  color: #637d96;
+  min-width: 64px;
+  font-weight: 600;
+}
+
+.inv-bank-row span:last-child {
+  color: #1a202c;
+  font-weight: 500;
+  text-align: right;
+}
+
+.inv-signature {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #e8edf2;
+}
+
+.inv-signature span {
+  font-size: 11px;
+  color: #637d96;
+  font-weight: 600;
+}
+
+.inv-signature-line {
+  margin-top: 20px;
+  width: 110px;
+  border-top: 1.5px solid #1a202c;
+}
+
+/* Summary */
+.inv-summary {
+  padding: 14px;
+  min-width: 220px;
+}
+
+@media (min-width: 640px) {
+  .inv-summary {
+    min-width: 260px;
+    width: 260px;
+  }
+}
+
+.inv-sum-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 4px 0;
+  color: #4a5568;
+}
+
+.inv-sum-row span:last-child {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #1a202c;
+}
+
+.inv-sum-row--gst-total span:last-child { color: #1a56a0; }
+
+.inv-sum-row--advance {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inv-advance-input {
+  max-width: 130px;
+  font-size: 14px;
+}
+
+.inv-sum-divider {
+  height: 1px;
+  background: #e8edf2;
+  margin: 6px 0;
+  border: none;
+}
+
+.inv-sum-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a202c;
+  border-top: 2px solid #1a56a0;
+  margin-top: 2px;
+}
+
+.inv-sum-total span:last-child {
+  font-size: 18px;
+  color: #1a56a0;
+  font-variant-numeric: tabular-nums;
+}
+
+.inv-sum-words {
+  font-size: 11px;
+  color: #637d96;
+  font-style: italic;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ════════════════════
+   NOTE BAR
+════════════════════ */
+.inv-note {
+  background: #fffbeb;
+  border-top: 1px solid #f6e05e;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #744210;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ════════════════════
+   ACTION BUTTONS
+════════════════════ */
+.inv-actions {
+  padding: 12px 14px;
+  background: #f7fafc;
+  border-top: 1px solid #e8edf2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.inv-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.inv-btn:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.inv-btn--muted   { background: #4a5568; color: #fff; }
+.inv-btn--gst-off { background: #f0f6ff; color: #1a56a0; border: 1.5px solid #bee3f8; }
+.inv-btn--gst-on  { background: #276749; color: #fff; }
+
+.inv-btn--export {
+  background: #1a56a0;
+  color: #fff;
+  flex: 2;
+  font-size: 14px;
+}
+
+/* ════════════════════
+   PRINT STYLES
+════════════════════ */
+@media print {
+  .inv-page { background: #fff; padding: 0; }
+  .inv-wrap { box-shadow: none; max-width: 100%; width: 100%; }
+  .no-print { display: none !important; }
+  .inv-mobile-rows { display: none !important; }
+  .inv-table-wrap { display: block !important; }
+  .inv-table-input { border: none !important; padding: 4px 2px; background: transparent !important; }
+  .inv-input { border: none !important; background: transparent !important; padding: 4px 0; }
+  .inv-actions { display: none !important; }
+  .inv-toast { display: none !important; }
+  .inv-bottom { flex-direction: row !important; }
+  .inv-bank { border-right: 1px solid #e8edf2 !important; border-bottom: none !important; }
+  .inv-field-error, .inv-qty-err { display: none !important; }
+}

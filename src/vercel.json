@@ -1,0 +1,15 @@
+{
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node",
+        "config": {
+          "nodeVersion": "20.x",
+          "installCommand": "npm install --legacy-peer-deps"
+        }
+      }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/index.html" }
+    ]
+  }
