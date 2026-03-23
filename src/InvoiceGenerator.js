@@ -119,6 +119,7 @@ const InvoiceGenerator = () => {
   const [advance,    setAdvance]    = useState("");
   const [invDate,    setInvDate]    = useState(todayISO());
   const [savedToast, setSavedToast] = useState(false);
+  const [infoToast,  setInfoToast]  = useState("");
   const [gstError,   setGstError]   = useState("");
 
   /* ── client fields ── */
@@ -148,8 +149,6 @@ const InvoiceGenerator = () => {
   }, [rows, applyGST, advance, to, addr, mobile, gst, pos, invDate,
       companyName, companyPhone, companyAddress,
       bankName, bankBranch, bankAcName, bankAcNo, bankIfsc]);
-
-
 
   /* ── row handlers ── */
   const updateRow = (i, field, val) =>
@@ -195,13 +194,24 @@ const InvoiceGenerator = () => {
     setGst(raw);
   };
 
+  const showInfoToast = (msg) => {
+    setInfoToast(msg);
+    setTimeout(() => setInfoToast(""), 3000);
+  };
+
   const handleGstToggle = () => {
     if (!applyGST && gst.trim() === "") {
       setGstError("Enter Client GST number first to apply GST");
+      showInfoToast("Please add Client GST number to apply GST 18%");
       return;
     }
     setGstError("");
-    setApplyGST(v => !v);
+    setApplyGST(v => {
+      const next = !v;
+      if (next) showInfoToast("GST 18% applied (CGST 9% + SGST 9%)");
+      else      showInfoToast("GST removed");
+      return next;
+    });
   };
 
   /* ── advance capped ── */
@@ -450,6 +460,7 @@ const InvoiceGenerator = () => {
   return (
     <div className="inv-page">
       {savedToast && <div className="inv-toast">✓ Saved</div>}
+      {infoToast  && <div className="inv-toast inv-toast--info">{infoToast}</div>}
 
       <div className="inv-wrap">
 
@@ -555,35 +566,27 @@ const InvoiceGenerator = () => {
             </table>
           </div>
 
-          {/* Mobile cards */}
+          {/* Mobile compact rows */}
           <div className="inv-mobile-rows">
+            <div className="inv-mobile-header-row">
+              <span style={{flex:"2 1 0"}}>Description</span>
+              <span style={{flex:"1.2 1 0"}}>Depth</span>
+              <span style={{flex:"0.7 1 0",textAlign:"right"}}>Qty</span>
+              <span style={{flex:"0.9 1 0",textAlign:"right"}}>Rate</span>
+              <span style={{flex:"1 1 0",textAlign:"right"}}>Amt</span>
+              <span style={{width:"22px"}}></span>
+            </div>
             {rows.map((row, i) => {
               const amount = (parseFloat(row.qty) || 0) * (parseFloat(row.rate) || 0);
               const { error: qtyErr } = validateQty(row.depth, row.qty);
               return (
-                <div key={i} className="inv-mobile-row">
-                  <div className="inv-mobile-row__header">
-                    <input className="inv-input inv-mobile-desc" value={row.description} onChange={e => updateRow(i, "description", e.target.value)} placeholder="Description" />
-                    <button className="inv-del-btn no-print" onClick={() => deleteRow(i)}>✕</button>
-                  </div>
-                  <div className="inv-mobile-row__depth">
-                    <span className="inv-label">Depth:</span>
-                    <input className="inv-input inv-input--sm" value={row.depth} onChange={e => updateRow(i, "depth", e.target.value)} placeholder="ft range" />
-                  </div>
-                  <div className="inv-mobile-row__nums">
-                    <div className="inv-mobile-num">
-                      <label className="inv-label">Qty{qtyErr ? <span className="inv-qty-err"> ({qtyErr})</span> : null}</label>
-                      <input className={`inv-input inv-input--num ${qtyErr ? "inv-input--error" : ""}`} type="number" inputMode="decimal" value={row.qty} onChange={e => handleQtyChange(i, e.target.value)} placeholder="0" />
-                    </div>
-                    <div className="inv-mobile-num">
-                      <label className="inv-label">Rate (₹)</label>
-                      <input className="inv-input inv-input--num" type="number" inputMode="decimal" value={row.rate} onChange={e => updateRow(i, "rate", e.target.value)} placeholder="0" />
-                    </div>
-                    <div className="inv-mobile-num inv-mobile-num--amount">
-                      <label className="inv-label">Amount</label>
-                      <span className="inv-amount-display">₹{fmt(amount)}</span>
-                    </div>
-                  </div>
+                <div key={i} className="inv-mobile-row-inline">
+                  <input className="inv-mri-input inv-mri-desc" value={row.description} onChange={e => updateRow(i, "description", e.target.value)} placeholder="Description" />
+                  <input className="inv-mri-input inv-mri-depth" value={row.depth} onChange={e => updateRow(i, "depth", e.target.value)} placeholder="depth" />
+                  <input className={`inv-mri-input inv-mri-num ${qtyErr ? "inv-mri-err" : ""}`} type="number" inputMode="decimal" value={row.qty} onChange={e => handleQtyChange(i, e.target.value)} placeholder="0" title={qtyErr || ""} />
+                  <input className="inv-mri-input inv-mri-num" type="number" inputMode="decimal" value={row.rate} onChange={e => updateRow(i, "rate", e.target.value)} placeholder="0" />
+                  <span className="inv-mri-amt">{amount > 0 ? `₹${fmt(amount)}` : "—"}</span>
+                  <button className="inv-del-btn no-print" onClick={() => deleteRow(i)}>✕</button>
                 </div>
               );
             })}
